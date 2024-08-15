@@ -91,6 +91,8 @@ const DragDropCanvas = () => {
   
   const debouncedUpdateXarrow = debounce(updateXarrow, 100);
 
+  
+
   useEffect(() => {
     const handleScroll = () => debouncedUpdateXarrow();
     const currentCanvasRef = canvasRef.current;
@@ -102,7 +104,7 @@ const DragDropCanvas = () => {
     const newCard = {
       id: `card-${Date.now()}`,
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      position: { x: 0, y: 0 },
+      position: { x: 200, y: 50 },
       size: { width: 200, height: 200 },
     };
     setCards([...cards, newCard]);
@@ -178,7 +180,7 @@ const DragDropCanvas = () => {
   };
 
   const removeConnection = (start, end) => {
-    setConnections(connections.filter(conn => conn.start !== start || conn.end !== end));
+    setConnections(connections.filter(conn => !(conn.start === start && conn.end === end)));
   };
 
   return (
@@ -209,6 +211,22 @@ const DragDropCanvas = () => {
                 </button>
                 <button onClick={(e) => deleteCard(card.id, e)} className="delete-btn">Delete</button>
               </div>
+              <div className="connections">
+  {connections.filter(conn => conn.start === card.id || conn.end === card.id)
+    .map((conn, index) => {
+      return (
+        <div key={index} className="connection-item">
+          <button 
+            className="remove-connection-btn" 
+            onClick={() => removeConnection(conn.start, conn.end)}
+          >
+            Remove Connection
+          </button>
+        </div>
+      );
+    })}
+</div>
+
               <ResizeHandle 
                 cardId={card.id} 
                 card={card} 
@@ -223,7 +241,6 @@ const DragDropCanvas = () => {
               start={connection.start}
               end={connection.end}
               path="smooth"
-              onClick={() => removeConnection(connection.start, connection.end)}
             />
           ))}
         </div>

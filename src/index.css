@@ -20,8 +20,9 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
+  scroll-behavior: smooth;
 }
 
 .canvas {
@@ -37,7 +38,7 @@ body {
   background-size: 20px 20px;
   border: 1px solid black;
   border-radius: 10px;
-  scroll-behavior: smooth; /* Smooth scrolling behavior */
+  scroll-behavior: smooth; 
   -webkit-overflow-scrolling: touch;
 }
 
@@ -160,6 +161,37 @@ body {
 .popup-content button:hover {
   background-color: #2980b9;
 }
+
+.xarrow-wrapper {
+  position: relative;
+}
+
+.connections {
+  margin-top: 10px;
+}
+
+.connection-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 0;
+}
+
+.remove-connection-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.remove-connection-btn:hover {
+  background-color: #c0392b;
+}
+
+
 
 .canvas-container > button {
   margin: 15px;
