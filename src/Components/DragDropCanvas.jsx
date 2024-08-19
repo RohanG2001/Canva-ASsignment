@@ -188,7 +188,7 @@ const DragDropCanvas = () => {
       <button onClick={addCard}>Add Card</button>
       <Xwrapper>
         <div className="canvas" ref={canvasRef}>
-          {cards.map(card => (
+          {cards.map((card, index) => (
             <motion.div
               key={card.id}
               id={card.id}
@@ -203,6 +203,7 @@ const DragDropCanvas = () => {
                 y: card.position.y,
               }}
             >
+              <div className="card-number">{index + 1}</div>
               <p>{`${card.text.slice(0, 50)}...`}</p>
               <button onClick={() => showPopup(card.text)}>Show More</button>
               <div className="card-buttons">
@@ -212,21 +213,22 @@ const DragDropCanvas = () => {
                 <button onClick={(e) => deleteCard(card.id, e)} className="delete-btn">Delete</button>
               </div>
               <div className="connections">
-  {connections.filter(conn => conn.start === card.id || conn.end === card.id)
-    .map((conn, index) => {
-      return (
-        <div key={index} className="connection-item">
-          <button 
-            className="remove-connection-btn" 
-            onClick={() => removeConnection(conn.start, conn.end)}
-          >
-            Remove Connection
-          </button>
-        </div>
-      );
-    })}
-</div>
-
+                {connections.filter(conn => conn.start === card.id || conn.end === card.id)
+                  .map((conn, connIndex) => {
+                    const connectedCardIndex = cards.findIndex(c => c.id === (conn.start === card.id ? conn.end : conn.start));
+                    return (
+                      <div key={connIndex} className="connection-item">
+                        <button 
+                          className="remove-connection-btn" 
+                          onClick={() => removeConnection(conn.start, conn.end)}
+                          data-card-number={connectedCardIndex + 1}
+                        >
+                          Remove Connection to Card {connectedCardIndex + 1}
+                        </button>
+                      </div>
+                    );
+                  })}
+              </div>
               <ResizeHandle 
                 cardId={card.id} 
                 card={card} 
@@ -261,5 +263,6 @@ const DragDropCanvas = () => {
     </div>
   );
 };
+
 
 export default DragDropCanvas;
